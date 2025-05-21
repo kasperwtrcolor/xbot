@@ -17,7 +17,7 @@ let lastHandledId = null;
 
 async function checkMentions() {
   try {
-    const result = await rwClient.v2.search(`@YourBotUsername`, {
+    const result = await rwClient.v2.search(`@bot_wassy`, {
       since_id: lastHandledId,
       'tweet.fields': ['author_id'],
       max_results: 5,
