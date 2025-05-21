@@ -1,0 +1,14 @@
+{
+  "name": "twitter-image-reply-bot",
+  "version": "1.0.0",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "node-fetch": "^3.3.2",
+    "twitter-api-v2": "^1.18.0"
+  },
+  "type": "module"
+}
