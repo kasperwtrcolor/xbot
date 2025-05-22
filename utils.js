@@ -1,10 +1,9 @@
 export function extractPrompt(tweetText) {
-  const parts = tweetText.split(' ').filter(w => !w.includes('@bot_wassy'));
-  if (parts.length === 0) return null;
-  return parts.join(' ').trim();
+  return tweetText.replace(/@bot_wassy/gi, '').trim();
 }
 
 export async function uploadImageToTwitter(client, buffer) {
-  const mediaId = await client.v1.uploadMedia(Buffer.from(buffer), { mimeType: 'image/png' });
-  return mediaId;
+  return await client.v1.uploadMedia(Buffer.from(buffer), {
+    mimeType: 'image/png',
+  });
 }
