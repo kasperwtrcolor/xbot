@@ -1,5 +1,5 @@
 export function extractPrompt(tweetText) {
-  const parts = tweetText.split(' ').filter(w => !w.includes('@YourBotUsername'));
+  const parts = tweetText.split(' ').filter(w => !w.includes('@bot_wassy'));
   if (parts.length === 0) return null;
   return parts.join(' ').trim();
 }
