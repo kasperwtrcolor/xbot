@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import fetch from 'node-fetch';
 import { TwitterApi } from 'twitter-api-v2';
 import { uploadImageToTwitter } from './utils.js';
@@ -7,6 +8,7 @@ import { uploadImageToTwitter } from './utils.js';
 dotenv.config();
 
 const app = express();
+app.use(cors()); // ← This is what solves the CORS issue
 app.use(express.json());
 
 const client = new TwitterApi({
