@@ -33,9 +33,7 @@ async function checkMentions() {
 
       const imageUrl = `${process.env.CF_IMAGE_GEN_URL}${encodeURIComponent(prompt)}`;
       const imageResp = await fetch(imageUrl, {
-        headers: {
-          Authorization: `Bearer ${process.env.CF_BEARER_TOKEN}`
-        }
+
       });
 
       if (!imageResp.ok) {
