@@ -94,4 +94,5 @@ async function checkMentions() {
   }
 }
 
-setInterval(checkMentions, 60000);
+// ⏳ Poll every 16 minutes to avoid hitting free-tier API rate limit
+setInterval(checkMentions, 16 * 60 * 1000);
