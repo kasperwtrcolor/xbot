@@ -19,13 +19,18 @@ async function checkMentions() {
   try {
     const result = await rwClient.v2.search(`@bot_wassy`, {
       since_id: lastHandledId,
-      'tweet.fields': ['author_id'],
+      'tweet.fields': ['author_id', 'referenced_tweets'],
       max_results: 5,
     });
 
     if (!result.data?.data?.length) return;
 
     for (const tweet of result.data.data.reverse()) {
+      // Skip retweets or replies to avoid loops or spam
+      if (tweet.referenced_tweets?.some(t => t.type === 'retweeted' || t.type === 'replied_to')) {
+        continue;
+      }
+
       lastHandledId = tweet.id;
 
       const prompt = extractPrompt(tweet.text);
@@ -33,27 +38,31 @@ async function checkMentions() {
 
       const imageUrl = `${process.env.CF_IMAGE_GEN_URL}${encodeURIComponent(prompt)}`;
       const imageResp = await fetch(imageUrl, {
-
+        headers: {
+          'Accept': 'image/png',
+        }
       });
 
       if (!imageResp.ok) {
-        console.error('Cloudflare image generation failed');
+        console.error('Cloudflare image generation failed:', await imageResp.text());
         continue;
       }
 
       const imageBuffer = await imageResp.arrayBuffer();
       const mediaId = await uploadImageToTwitter(rwClient, imageBuffer);
 
+      const taggedHandle = (prompt.match(/@\w+/) || [])[0] || 'your idea';
+
       await rwClient.v2.reply(
-        `Here's your image for ${prompt.match(/@\w+/)?.[0] || 'your idea'}:`,
+        `Here's your image for ${taggedHandle}:`,
         tweet.id,
         { media: { media_ids: [mediaId] } }
       );
 
-      console.log('Replied to tweet:', tweet.id);
+      console.log('✅ Replied to tweet:', tweet.id);
     }
   } catch (err) {
-    console.error('Error handling mentions:', err);
+    console.error('❌ Error handling mentions:', err);
   }
 }
 
