@@ -34,3 +34,9 @@ https://dev.fun/p/8a8964ef1f66a5df34cf
 	•	Backend: Node.js + Express + twitter-api-v2 + node-fetch
 	•	Image Gen: Cloudflare Workers AI
 	•	Hosting: Render.com (backend), dev.fun (frontend)
+
+⸻
+
+Example
+		Tweet: https://twitter.com/elonmusk/status/1782329475874691234  
+		Prompt: cyberpunk hamster riding a hoverbike
